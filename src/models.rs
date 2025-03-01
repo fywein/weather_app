@@ -1,62 +1,51 @@
 use serde::Deserialize;
 
-#[derive(Deserialize, Debug)]
-pub struct WeatherData {
-    pub coord: Coord,
-    pub weather: Vec<Weather>,
-    pub base: String,
+// 현재 날씨 데이터
+#[derive(Deserialize, Debug, Clone)]
+pub struct CurrentWeather {
     pub main: Main,
-    pub visibility: i32,
+    pub weather: Vec<WeatherDescription>,
     pub wind: Wind,
-    pub clouds: Clouds,
-    pub dt: i64,
     pub sys: Sys,
-    pub timezone: i32,
-    pub id: i32,
-    pub name: String,
-    pub cod: i32,
+    pub name: String, // 도시 이름 추가
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Coord {
-    pub lon: f32,
-    pub lat: f32,
+#[derive(Deserialize, Debug, Clone)]
+pub struct Main {
+    pub temp: f32, // 섭씨 온도
+    pub feels_like: f32,
+    pub humidity: i32,
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Weather {
-    pub id: i32,
-    pub main: String,
+#[derive(Deserialize, Debug, Clone)]
+pub struct WeatherDescription {
     pub description: String,
     pub icon: String,
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Main {
-    pub temp: f32,
-    pub feels_like: f32,
-    pub temp_min: f32,
-    pub temp_max: f32,
-    pub pressure: i32,
-    pub humidity: i32,
-}
-
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Wind {
-    pub speed: f32,
+    pub speed: f32, // m/s
     pub deg: i32,
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Clouds {
-    pub all: i32,
-}
-
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Sys {
-    pub r#type: i32,
-    pub id: i32,
     pub country: String,
     pub sunrise: i64,
     pub sunset: i64,
+}
+
+// 5일 예보 데이터
+#[derive(Deserialize, Debug, Clone)]
+pub struct Forecast {
+    pub list: Vec<ForecastItem>,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+pub struct ForecastItem {
+    pub dt: i64,
+    pub main: Main,
+    pub weather: Vec<WeatherDescription>,
+    pub wind: Wind,
 }
